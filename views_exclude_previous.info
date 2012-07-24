@@ -2,5 +2,5 @@ name = "Views Exclude Previous"
 description = "Views Exclude Previous provides a views filter which exlcudes nodes that have already been loaded/displayed on the current page."
 dependencies[] = views
 package = Views
-core = 6.x
-
+core = 7.x
+files[] = views/views_exclude_previous_handler_filter.inc
