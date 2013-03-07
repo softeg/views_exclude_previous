@@ -34,6 +34,7 @@ function views_exclude_previous_views_handlers() {
     ),
   );
 }
+
 /**
  * Implements hook_views_post_execute().
  */

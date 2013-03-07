@@ -26,7 +26,7 @@ class views_exclude_previous_handler_filter extends views_handler_filter_in_oper
   /**
    * Provide inclusive/exclusive matching
    */
-  function operator_options() {
+  function operator_options($which = 'title') {
     return array(
       'not in' => t('Is not in'),
     );
