@@ -5,51 +5,48 @@
  * Main file of the views exclude previous module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
 /**
  * Implements hook_help().
  */
-function views_exclude_previous_help($section, $arg) {
-  switch ($section) {
-    case 'admin/modules#description':
-      return t('Views Exclude Previous provides a views filter which exlcudes nodes that have already been loaded/displayed on the current page.');
+function views_exclude_previous_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.views_exclude_previous':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Views Exclude Previous provides a views filter which exlcudes nodes that have already been loaded/displayed on the current page.') . '</p>';
+      return $output;
   }
-}
-
-/**
- * Implements hook_views_api().
- */
-function views_exclude_previous_views_api() {
-  return array(
-    'api' => '3.0',
-    'path' => drupal_get_path('module', 'views_exclude_previous') . '/views',
-  );
 }
 
 /**
  * Implements hook_node_load().
  */
-function views_exclude_previous_node_load($nodes, $types) {
-  foreach ($nodes AS $nid => $node) {
+function views_exclude_previous_node_load($nodes) {
+  foreach ($nodes as $nid => $node) {
     _views_exclude_previous('node_load', $nid);
   }
 }
 
 /**
- * Implements hook_node_view().
+ * Implements hook_ENTITY_TYPE_view() for node entities.
  */
-function views_exclude_previous_node_view($node, $view_mode, $langcode) {
-  _views_exclude_previous('node_view', $node->nid);
+function views_exclude_previous_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  _views_exclude_previous('node_view', $node->id());
 }
 
 /**
  * This function stores/returns nids for the given category.
  *
- * @staticvar array $excludes
- *   Static storage of our excluded nids.
- * @param $cat
+ * Static storage of our excluded nids.
+ *
+ * @param string $cat
  *   A category given by the exclude plugin.
- * @param $nid
+ * @param int $nid
  *   The nid to be excluded. Optional so the function just returns the category.
+ *
  * @return array
  *   Always returns the given category.
  */
@@ -61,5 +58,5 @@ function _views_exclude_previous($cat, $nid = NULL) {
     $excludes[$cat][$nid] = $nid;
   }
 
-  return !empty($excludes[$cat]) ? $excludes[$cat] : array(0);
+  return !empty($excludes[$cat]) ? $excludes[$cat] : [0];
 }
