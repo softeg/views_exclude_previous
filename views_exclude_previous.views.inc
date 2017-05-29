@@ -5,6 +5,8 @@
  * Views functions for views exclude previous.
  */
 
+use Drupal\views\ViewExecutable;
+
 /**
  * Implements hook_views_data_alter().
  */
@@ -20,8 +22,8 @@ function views_exclude_previous_views_data_alter(&$data) {
 /**
  * Implements hook_views_post_execute().
  */
-function views_exclude_previous_views_post_execute($view) {
-  if ($view->base_table === 'node') {
+function views_exclude_previous_views_post_execute(ViewExecutable $view) {
+  if (in_array('node_field_data', array_keys($view->getBaseTables()))) {
     foreach ($view->result as $result) {
       if (!empty($result->nid)) {
         _views_exclude_previous('views', $result->nid);
