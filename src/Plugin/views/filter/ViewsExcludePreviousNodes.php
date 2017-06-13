@@ -20,7 +20,7 @@ class ViewsExcludePreviousNodes extends InOperator {
     // @todo: Make this pluggable.
     $this->valueOptions = [
       'node_load' => 'Exclude nodes previously loaded (hook_node_load).',
-      'node_view' => 'Exclude nodes previously viewd (hook_node_view).',
+      'node_view' => 'Exclude nodes previously viewed (hook_node_view).',
       'views' => 'Exclude nodes that where loaded in any node based view.',
     ];
   }
